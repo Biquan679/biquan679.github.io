@@ -19,11 +19,16 @@
 		<script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
 		
 		<script>
+
+
+
+
+		
 			var attribution = new ol.control.Attribution({
 								  collapsible: false
 							  });
-
-			var map = new ol.Map({
+			
+						var map = new ol.Map({
 							controls: ol.control.defaults({attribution: false}).extend([attribution]),
 							layers: [
 								new ol.layer.Tile({
@@ -41,6 +46,8 @@
 							zoom: 14
 						})
 					});
+			
+		
 			
 			var layer = new ol.layer.Vector({
 								source: new ol.source.Vector({
