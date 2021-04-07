@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Lab 6 | D3</title>
+		<script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
+
+		<script src="https://biquan679.github.io/Lab6/Ownmap/Boundary.json"></script>
+		<script src="https://biquan679.github.io/Lab6/Ownmap/samples.json"></script>
+
+		<style>
+			body{
+				position: absolute;
+				font-family: "Proxima Nova", "Montserrat", sans-serif;
+				}
+			h1, h2{
+				position: absolute;
+				background: white;
+				left: 200px;
+				font-size: 1.3em;
+				font-weight: 100;
+				}
+			h2{
+				top: 30px;
+				font-size: 1em;
+			  }
+			.hover{
+				fill: yellow;
+			}
+
+		</style>
+	</head>
+	<body>
+		<script src="https://d3js.org/d3-tile.v0.0.min.js"></script>
+		<h1>A pasture research site (101.4392 W, 42.0726 N) in Nebraska</h1>
+			<h2></h2>
+		<script>
+			//we will be putting our D3 code here within body script tags
+			
+			var width = 1000;
+			var height = 650;
+			var lowColor = "#f9f9f9";
+			var highColor = "#bc2a66";
+			var minVal = 200;
+			var maxVal = 3000;
+			
+						  
+			var ramp = d3.scaleLinear().domain([minVal, maxVal]).range([lowColor, highColor]);
+			
+			var svg = d3.select("body")
+					    .append("svg")
+						.attr("width", width)
+						.attr("height", height);
+			
+			var g = svg.append("g");
+			
+			var albersProjection = d3.geoAlbers()
+									 .scale(9000000)
+									 .rotate([101.439253, 0])
+									 .center([0, 42.0726])
+									 .translate([width/2, height/2]);
+			
+			var geoPath = d3.geoPath()
+							.projection(albersProjection);
+			
+			g.selectAll("path")
+			 .data(Boundary.features)
+			 .enter()
+			 .append("path")
+			 .attr("fill", "#ccc")
+			 .attr("stroke", "#333")
+			 .attr("d", geoPath)
+			 .on("mouseover", function(d){
+						d3.select("h2").text("Inside the Boundary");
+						//d3.select(this).attr("class", "sampling location hover");
+						})
+					 .on("mouseout",function(d){
+						d3.select("h2").text("Outside the Boundary");
+						//d3.select(this).attr("class", "sampling location");
+						});
+		
+			var Boundary_json = svg.append("g");
+			
+			Boundary_json.selectAll("path")
+					 .data(Samples.features)
+					 .enter()
+					 .append("path")
+					 .attr("fill", function(d){return ramp(d.properties.WS_2016)})
+					 .attr("stroke", "#999")
+					 .attr("d", geoPath)
+					 .attr("class","sampling location")
+					 .on("mouseover", function(d){
+						d3.select("h2").text("Sampling location <" + d.properties.OBJECTID + ">: " + d.properties.WS_2016 + " lb / ac");
+						d3.select(this).attr("class", "sampling location hover");
+						})
+					 .on("mouseout",function(d){
+						d3.select("h2").text("");
+						d3.select(this).attr("class", "sampling location");
+						});
+		</script>
+	</body>
+</html>
