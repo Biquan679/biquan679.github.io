@@ -10,10 +10,17 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
       
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
-
+<script src="https://biquan679.github.io/Lab6/Ownmap/Boundary.json"></script>
       <style>
           html, body { margin: 0; padding: 0; height: 100%; }
           #map { min-height: 100%; }
+		  .legend {
+              padding: 6px 8px;
+              line-height: 18px;
+              background: rgba(255,255,255,0.9);
+              box-shadow: 0 0 15px rgba(0,0,0,0.2);
+              border-radius: 5px;
+          }
       </style>
   </head>
 
@@ -22,18 +29,30 @@
 
       <script>
           var map = L.map('map', {
-                center: [38.1625228, -96.9633171],
-                zoom: 4
+                center: [42.0726, -101.439253],
+                zoom: 17
             });
 
           L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.{ext}', {
-attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			subdomains: 'abcd',
-			minZoom: 0,
-			maxZoom: 20,
+			minZoom: 5,
+			maxZoom: 18,
 			ext: 'png'
 			}).addTo(map);
-		 $.getJSON("OwnData.geojson")
+		 
+		
+		  var Boundary = new L.geoJson(Boundary).addTo(map);
+		  
+
+		 var overlaymaps = {
+			"Pasture site Boundary": Boundary
+			};
+	
+		L.control.layers({}, overlaymaps, {collapsed:false}).addTo(map);
+		  
+		  
+		 $.getJSON("http://biquan679.github.io/Lab7/OwnData.geojson")
             .done(function(data) {
                 var info = processData(data);
                 createPropSymbols(info.timestamps, data);
@@ -54,10 +73,11 @@ attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a hre
 
           // At each row, go through the columns/attributes to get the values
       for (var attribute in properties) {
-          if ( attribute != 'id' &&
-               attribute != 'name' &&
-               attribute != 'latitude' &&
-               attribute != 'longitude' )   // != means NOT EQUAL TO
+          if ( attribute != 'OBJECTID_1' &&
+               attribute != 'OBJECTID' &&
+               attribute != 'ORIG_FID' &&
+			   attribute != 'POINT_Y' &&
+               attribute != 'POINT_X' )   // != means NOT EQUAL TO
          // These 3 columns are NOT recorded. Add more if you have non-data fields.
                                                   
                       {
@@ -128,7 +148,7 @@ attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a hre
 
     // Define the labels of the time slider as an array of strings
     // Modify this for your data
-    var labels = ["1950", "1960", "1970", "1980", "1990", "2000", "2010"];
+    var labels = ["2016", "2017", "2018", "2019"];
           <!-- $(slider).mousedown(function () { -->
             <!-- map.dragging.disable(); -->
         <!-- }); -->
@@ -139,7 +159,7 @@ attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a hre
           'type':'range',
           'max': timestamps[timestamps.length-1],
           'min':timestamps[0],
-          'step': 10, // Change this to match the interval between adjacent timestamps
+          'step': 1, // Change this to match the interval between adjacent timestamps
           'value': String(timestamps[0])
         })
         .on('input change', function() {
@@ -154,7 +174,7 @@ attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a hre
     return slider;
   }
   sliderControl.addTo(map);
-  createTimeLabel("1950"); //The starting timestamp label
+  createTimeLabel("2016"); //The starting timestamp label
   }
  // Add labels to the time slider when the map first loaded
   function createTimeLabel(startTimestamp) {
@@ -175,7 +195,7 @@ attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a hre
                   var radius = calcPropRadius(props[timestamp]); // circle radius, calculation function defined below
 
 // pop-up information (when mouseover) for each city is also defined here
-                 var popupContent = props.name + ' ' + timestamp + ' population: ' + String(props[timestamp]);
+                 var popupContent = 'Sampling location <#' + props.OBJECTID + '> ' + timestamp + ' forage biomass: ' + String(props[timestamp]);
 
                   layer.setRadius(radius);  // Leaflet method for setting the radius of a circle
                   layer.bindPopup(popupContent, { offset: new L.Point(0,-radius) }); // bind the popup content, with an offset
@@ -185,7 +205,7 @@ attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a hre
 // calculate the radius of the proportional symbols based on area
             function calcPropRadius(attributeValue) {
 
-              var scaleFactor = 0.001;   // the scale factor is used to scale the values; the units of the radius are in meters
+              var scaleFactor = 0.3;   // the scale factor is used to scale the values; the units of the radius are in meters
                                          // you may determine the scale factor accordingly based on the range of the values and the mapping scale
               var area = attributeValue * scaleFactor;
 
