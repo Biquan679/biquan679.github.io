@@ -111,12 +111,7 @@
 					
 			d3.select("#timeslide").on("input", function() {
 							update(+this.value);
-						})
-						.on("mouseout", function(){
-							update(initialyear)
-						});
-						
-						
+						})						
 						
 						function update(value) {
 							document.getElementById("range").innerHTML=year[value];
