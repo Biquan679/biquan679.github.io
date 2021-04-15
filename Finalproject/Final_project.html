@@ -1,7 +1,7 @@
 <!DOCTYPE html>
   <head>
       <meta charset="utf-8">
-      <title>Lab 7 part 2</title>
+      <title>Final project</title>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
 
@@ -42,25 +42,23 @@
 			}).addTo(map);
 		 
 		
-		var Boundary = new L.geoJson(Boundary).addTo(map);
+		  var Boundary = new L.geoJson(Boundary).addTo(map);
 		  
 
-		 //var overlaymaps = {
-		//	"Pasture site Boundary": Boundary
-		//	};
+		 var overlaymaps = {
+			"Pasture site Boundary": Boundary
+			};
 	
-		//L.control.layers({}, overlaymaps, {collapsed:false}).addTo(map);
+		L.control.layers({}, overlaymaps, {collapsed:false}).addTo(map);
 		  
 		  
-		 $.getJSON("http://biquan679.github.io/Finalproject/TAbiomass.geojson")
+		 $.getJSON("https://biquan679.github.io/Finalproject/TLbiomass.geojson")
             .done(function(data) {
                 var info = processData(data);
                 createPropSymbols(info.timestamps, data);
 				createSliderUI(info.timestamps);
             });
-		
-		
-		
+		   
 		   function processData(data) {
           // First, initialize the variables to hold the timestamps and min/max population values
       var timestamps = [];  // square brackets to define an array of data
@@ -75,11 +73,9 @@
 
           // At each row, go through the columns/attributes to get the values
       for (var attribute in properties) {
-          if ( attribute != 'OBJECTID_1' &&
-               attribute != 'OBJECTID' &&
-               attribute != 'ORIG_FID' &&
-			   attribute != 'POINT_Y' &&
-               attribute != 'POINT_X' )   // != means NOT EQUAL TO
+          if ( attribute != 'OBJECTID' &&
+               attribute != 'Longitude' &&
+               attribute != 'Latitude')   // != means NOT EQUAL TO
          // These 3 columns are NOT recorded. Add more if you have non-data fields.
                                                   
                       {
@@ -128,6 +124,7 @@
                             this.closePopup();
                             this.setStyle({fillColor: '#501e65'});  // fill turns original color when mouseout
                         }
+						
                     });
                   }
               }).addTo(map);

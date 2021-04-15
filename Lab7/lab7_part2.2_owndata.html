@@ -15,7 +15,7 @@
       <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
       <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" type="text/css">
       <script src="https://dsps.lib.uiowa.edu/placing/public/jqueryUiTouchPunch-0.2.2/jquery.ui.touch-punch.min.js"></script>
-		<script src="https://biquan679.github.io/Lab6/Ownmap/samples.json"></script>
+		<script src="https://biquan679.github.io/Lab7/Brintondata.geojson"></script>
 
 	  <link rel="stylesheet" type="text/css" href="https://dsps.lib.uiowa.edu/placing/css/style.css">
 	  <link rel="stylesheet" type="text/css" href="https://dsps.lib.uiowa.edu/placing/css/navwrap.css">
@@ -33,7 +33,7 @@
                 });
 	 
       var map = L.map('map', {
-	  center: [42.0726, -101.439253],
+	  center: [41.89, -92.95],
 	  zoom: 17,
 	  layers: [basemap] 
 	  });
@@ -52,7 +52,7 @@
           layer.bindPopup(popup, {maxWidth: "auto"});
         }
       }; // end onEachFeature
- var firstlayer = L.geoJson(Samples, {
+ var firstlayer = L.geoJson(Brintondata, {
         // add popups
         onEachFeature: onEachFeature,
         pointToLayer: function(feature, latlng) {
