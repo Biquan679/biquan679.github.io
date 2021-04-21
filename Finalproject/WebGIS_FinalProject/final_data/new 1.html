@@ -29,8 +29,8 @@
           }
 
 		</style>
-	
-		<script src="Pasture_boudanry.js"></script>
+	    <script src="https://biquan679.github.io/Lab6/Ownmap/Boundary.json"></script>
+
     </head>
 		
     <body>
@@ -48,56 +48,56 @@
 
        var map = L.map('map', {
               center: [42.08095953631593, -101.40296142624916],
-              zoom: 13.0
+              zoom: 10.0
           });
 
-   L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.{ext}', {
-	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-	subdomains: 'abcd',
-	minZoom: 0,
-	maxZoom: 20,
-	ext: 'png'
-}).addTo(map);
+   <!-- L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.{ext}', { -->
+	<!-- attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors', -->
+	<!-- subdomains: 'abcd', -->
+	<!-- minZoom: 0, -->
+	<!-- maxZoom: 20, -->
+	<!-- ext: 'png' -->
+<!-- }).addTo(map); -->
 
 
-	var imagery = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.{ext}', {
-		attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-		subdomains: 'abcd',
-		minZoom: 0,
-		maxZoom: 18,
-		ext: 'png'
-	}).addTo(map);
-	var canvas = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
-		attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-		subdomains: 'abcd',
-		minZoom: 0,
-		maxZoom: 20,
-		ext: 'png'
-	});
+	<!-- var imagery = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.{ext}', { -->
+		<!-- attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors', -->
+		<!-- subdomains: 'abcd', -->
+		<!-- minZoom: 0, -->
+		<!-- maxZoom: 18, -->
+		<!-- ext: 'png' -->
+	<!-- }).addTo(map); -->
+	<!-- var canvas = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', { -->
+		<!-- attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors', -->
+		<!-- subdomains: 'abcd', -->
+		<!-- minZoom: 0, -->
+		<!-- maxZoom: 20, -->
+		<!-- ext: 'png' -->
+	<!-- }); -->
 
 
-	function getColor(value) {
-            return value > 300 ? '#800026':
-                   value > 100  ? '#BD0026':
-                   value > 50  ? '#E31A1C':
-                   value > 25  ? '#FC4E2A':
-				   value > 5  ? '#FD8D3C':
-                                       '#FEB24C';
+	<!-- function getColor(value) { -->
+            <!-- return value > 300 ? '#800026': -->
+                   <!-- value > 100  ? '#BD0026': -->
+                   <!-- value > 50  ? '#E31A1C': -->
+                   <!-- value > 25  ? '#FC4E2A': -->
+				   <!-- value > 5  ? '#FD8D3C': -->
+                                       <!-- '#FEB24C'; -->
 
-            }
+            <!-- } -->
 
-	function style(feature){
-                return {
-                    fillColor: getColor(feature.properties.Size__Ac_),
-                    weight: 2,
-                    opacity: 1,
-                    color: 'gray',
-                    fillOpacity: 0.9
-                };
-            }
+	<!-- function style(feature){ -->
+                <!-- return { -->
+                    <!-- fillColor: getColor(feature.properties.Size__Ac_), -->
+                    <!-- weight: 2, -->
+                    <!-- opacity: 1, -->
+                    <!-- color: 'gray', -->
+                    <!-- fillOpacity: 0.9 -->
+                <!-- }; -->
+            <!-- } -->
 
 
-	var Boundary = new L.geoJson(Boundary, {style:style}).addTo(map);
+	var Boundary = new L.geoJson(Boundary, {}).addTo(map);
 	
 	<!-- var minValue = 100; -->
 	<!-- var minRadius = 5; -->
