@@ -1,8 +1,4 @@
-var TotalBiomass = {
-"type": "FeatureCollection",
-"name": "TotalBiomass",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3857" } },
-"features": [
+[
 { "type": "Feature", "properties": { "OBJECTID": 1, "2016": 1356.118, "2017": 1366.824, "2018": 3607.987, "2019": 1131.288, "Longitude": -101.40930082600001, "Latitude": 42.080146809 }, "geometry": { "type": "Point", "coordinates": [ -101.409300826, 42.080146809 ] } },
 { "type": "Feature", "properties": { "OBJECTID": 2, "2016": 1580.948, "2017": 1591.654, "2018": 1748.678, "2019": 1002.813, "Longitude": -101.437414995, "Latitude": 42.066887395999998 }, "geometry": { "type": "Point", "coordinates": [ -101.437414995, 42.066887396 ] } },
 { "type": "Feature", "properties": { "OBJECTID": 3, "2016": 3240.408, "2017": 2066.295, "2018": 2291.125, "2019": 942.145, "Longitude": -101.46198918100001, "Latitude": 42.076616626000003 }, "geometry": { "type": "Point", "coordinates": [ -101.461989181, 42.076616626 ] } },
@@ -34,4 +30,4 @@ var TotalBiomass = {
 { "type": "Feature", "properties": { "OBJECTID": 29, "2016": 1648.754, "2017": 1987.783, "2018": 1955.665, "2019": 1445.336, "Longitude": -101.441727251, "Latitude": 42.077320884000002 }, "geometry": { "type": "Point", "coordinates": [ -101.441727251, 42.077320884 ] } },
 { "type": "Feature", "properties": { "OBJECTID": 30, "2016": 1406.08, "2017": 917.1639, "2018": 1820.053, "2019": 1705.854, "Longitude": -101.353876559, "Latitude": 42.082335178999998 }, "geometry": { "type": "Point", "coordinates": [ -101.353876559, 42.082335179 ] } }
 ]
-}
+
