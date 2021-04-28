@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Biquan Final Project</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+		integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+		crossorigin=""/>
+		<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+		integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+		crossorigin=""></script>
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+      
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+		<script src="https://biquan679.github.io/Finalproject/WebGIS_FinalProject/final_data/GSL.json"></script> 
+		<script src="https://biquan679.github.io/Finalproject/WebGIS_FinalProject/final_data/TotalBiomass.json"></script> 
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+	
+	    <link rel="stylesheet" href="https://js.arcgis.com/4.19/esri/themes/light/main.css" />
+		<script src="https://js.arcgis.com/4.19/"></script>
+	 <style>
+		html, body,  #map { width: 1000px; height: 600px; }
+		.box {
+			width:15px;
+			height:15px;
+			border-radius:25px;
+			display: inline-block;
+			}	
+		.legend {
+			padding: 6px 8px;
+			line-height: 18px;
+			background: rgba(255,255,255,0.9);
+			box-shadow: 0 0 15px rgba(0,0,0,0.2);
+			border-radius: 5px;
+			}   
+		.legend i {
+			width: 18px;
+			height: 18px;
+			float: left;
+			margin-right: 8px;
+			opacity: 0.7;
+			}
+		h1 {
+			position: absolute;
+			background: white;
+			left: 490px;
+			top: 20px;
+			font-size: 1.3em;
+			font-weight: 100;
+			}
+		.button1 {
+			background-color: #d95f0e;
+			color: black
+			}
+		.button2 {
+			background-color: #fec44f;
+			color: black
+			}
+		.button3 {
+			background-color: #fff7bc;
+			color: black
+			}
+		.button4 {
+			background-color: #4CAF50;
+			border: none;
+			color: white;
+			padding: 8px 8px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			cursor: pointer;
+			}
+		h2 {
+			position: absolute;
+			background: white;
+			left: 1050px;
+			top: 80px;
+			font-size: 1.3em;
+			font-weight: 100;
+			color: #d95f0e;
+			}
+		h3 {
+			position: absolute;
+			background: white;
+			left: 1020px;
+			top: 150px;
+			font-size: 1.0em;
+			font-weight: 100;
+			}
+	</style>
+</head>
+<body>
+	<p>Adding data Layer using the buttons bellow.</p>
+		<button class="button button1" value = 'https://biquan679.github.io/Finalproject/WebGIS_FinalProject/final_data/TotalBiomass.json.geojson' onclick="myFunction(this)" id="1">Total Biomass data</button>
+		<button class="button button2" value = 'https://biquan679.github.io/Finalproject/WebGIS_FinalProject/final_data/CoolBiomass.geojson' onclick="myFunction(this)" id="2">Cool-season grass data</button>
+		<button class="button button3" value = 'https://biquan679.github.io/Finalproject/WebGIS_FinalProject/final_data/WarmBiomass.geojson' onclick="myFunction(this)" id="3">warm-season grass data</button><br>
+		<button class="button button4" onclick="Refresh()" id="4">Click to Remove data Before adding new data</button> 
+	</div>
+		<div id="map" ></div>
+		<h1><strong>Click on a pasture land polygon for land information or <br> hover over a sampling location after adding data layer.</strong></h1>
+		<h2><strong>Web map of pasture sampling biomass data <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; from 2016 to 2019.</strong></h2>
+		<h3><strong><br>Brief description:</strong><br>
+		<br>1. Base elements:
+		<br>&nbsp;&nbsp;&nbsp;&nbsp; I. World imagery base map at Zoom level of 13.
+		<br>&nbsp;&nbsp;&nbsp;&nbsp; II. Pasture and sub-pasutre boundary at Gudmundsen with Color Palettes filling and transparent level of 0.2 based on the Area (Acres).
+		<br>&nbsp;&nbsp;&nbsp;&nbsp; III. Sampling locations repesented by the red dots.<br>
+		<br>2. Three data layers
+		<br>&nbsp;&nbsp;&nbsp;&nbsp; I. Total biomass data layer.
+		<br>&nbsp;&nbsp;&nbsp;&nbsp; II. Cool-season grass biomass data layer.
+		<br>&nbsp;&nbsp;&nbsp;&nbsp; III. Warm-season grass biomass data layer.<br>
+		<br>3. Four NDVI raster layers from 2016 to 2019<br>
+		<br><strong>Interactive events</strong>:
+		<br>&nbsp;&nbsp;&nbsp;&nbsp; Click on the sub pasture to popup land information.
+		<br>&nbsp;&nbsp;&nbsp;&nbsp; Use time slider to display the yearly data. 
+		<br>&nbsp;&nbsp;&nbsp;&nbsp; Hover over a sampling point to display details.
+		<br>&nbsp;&nbsp;&nbsp;&nbsp; Use the layer controller to add NDVI rasters into the map.
+		<br>&nbsp;&nbsp;&nbsp;&nbsp; Use the layer controller to turn off the boundary and sampling location base layers.
+		<br><br><br>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;Created by Biquan Zhao and presented on April 29 2021.
+		</h3>
+	<script type="text/javascript">
+
+		var map = L.map('map').setView([42.08095953631593, -101.40296142624916], 13.0);
+    
+			L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+				attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+				minZoom: 10,
+				maxZoom: 15,
+			}).addTo(map);
+	  
+		function getColor(value) {
+            return value > 200 ? '#08519c':
+                   value > 150 ? '#3182bd':
+                   value > 100 ? '#6baed6':
+                   value > 50  ? '#9ecae1':
+				   value > 0   ? '#c6dbef':
+                                 '#eff3ff';
+            }
+	  
+		function style(feature){
+            return {
+                fillColor: getColor(feature.properties.Size__Ac_),
+                weight: 2,
+                opacity: 1,
+                color: 'gray',
+                fillOpacity: 0.5
+				};
+            }
+	   
+		var onEachFeature = function(feature, layer) {
+			if (feature.properties) {
+				var prop = feature.properties;
+        // make a cool little html popup with properties
+				var popup = '<h3>'+ 'Pasture' +'<br>'+prop['Pasture']+'</h3>'+ '<br><strong>Category: </strong><br>'+prop['Category']+'<br>'+'<br><strong>Size (Acres): </strong>'+prop['Size__Ac_']+'<br>'+'<br><br><i>Information of the land.</i>';
+        // add known info about event to the description
+          
+        // you must create a layer property on each feature or else
+        // the search results won't know where the item is on the map / layer
+				feature.layer = layer;
+				layer.bindPopup(popup, {maxWidth: 500});
+				}
+			}; // end onEachFeature
+    
+		var GSL = L.geoJson(GSL, {style:style,
+        // add popups
+			onEachFeature: onEachFeature,
+			pointToLayer: function(feature, latlng) {
+				return L.circleMarker(latlng, blueCircleMarkers);
+				}
+			}).addTo(map);
+	 
+		var legend = L.control({position: 'bottomleft'}); // Try the other lower corner if you prefer.
+
+		legend.onAdd = function (map) {
+
+		var div = L.DomUtil.create('div', 'legend'),
+			grades = [0, 50, 100, 150, 200]; 
+		// break values to define the intervals of population - YOU WILL NEED TO MODIFY IT TO GET THE RIGHT LEGEND BREAKS
+
+			div.innerHTML = '<b>Area (Ac) <br><br></b>';
+        // The legend title, in this case it's Population 2019
+
+			for (var i = 0; i < grades.length; i++) {
+				div.innerHTML +=
+					'<i style="background:' + getColor(grades[i] + 1) + '"></i>' +
+					grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] +   '<br><br>' : '+');
+                }
+				
+            return div;
+			
+            };
+            
+		legend.addTo(map);
+
+		var NDVI_16 = L.tileLayer('file:///C%3A/Users/Beqaaa/biquan679.github.io/Project/Data/NDVI2016/{z}/{x}/{y}.png', {
+			minZoom: 10,
+			maxZoom: 15,
+			tms: false,
+			attribution: 'Generated by TilesXYZ'
+		});
+	  
+	  
+		var NDVI_17 = L.tileLayer('file:///C%3A/Users/Beqaaa/biquan679.github.io/Project/Data/NDVI2017/{z}/{x}/{y}.png', {
+			minZoom: 10,
+			maxZoom: 15,
+			tms: false,
+			attribution: 'Generated by TilesXYZ'
+		});
+	  
+	  
+		var NDVI_18 = L.tileLayer('file:///C%3A/Users/Beqaaa/biquan679.github.io/Project/Data/NDVI2018/{z}/{x}/{y}.png', {
+			minZoom: 10,
+			maxZoom: 15,
+			tms: false,
+			attribution: 'Generated by TilesXYZ'
+		});
+	  
+	  
+		var NDVI_19 = L.tileLayer('file:///C%3A/Users/Beqaaa/biquan679.github.io/Project/Data/NDVI2019/{z}/{x}/{y}.png', {
+			minZoom: 10,
+			maxZoom: 15,
+			tms: false,
+			attribution: 'Generated by TilesXYZ'
+		});
+	
+		var samples = L.geoJson(TotalBiomass, {
+			pointToLayer: function(feature, latlng) {
+				return L.circleMarker(latlng, { // we use circle marker for the points
+					fillColor: 'red',  // fill color of the circles
+					color: '#fee0d2',      // border color of the circles
+					weight: 0,             // circle line weight in pixels
+					fillOpacity: 1,        // fill opacity (0-1)
+					radius:5						  
+				})
+			}
+		}).addTo(map);
+	
+		var baseLayers = {
+			"NDVI 2016": NDVI_16,
+			"NDVI 2017": NDVI_17,
+			"NDVI 2018": NDVI_18,
+			"NDVI 2019": NDVI_19
+		};
+
+		var overlays = {
+			"Boundary": GSL,
+			"Samples": samples
+		};
+
+		L.control.layers(baseLayers, overlays).addTo(map);
+
+
+
+		function myFunction (button){
+			var x = button.id;
+			var url = document.getElementById(x).value;
+			var button_text = document.getElementById(x).innerHTML;
+
+			var feat = $.getJSON(url).done(function(data) {
+                var info = processData(data);
+                layer = createPropSymbols(info.timestamps, data, button_text);
+				slider = createSliderUI(info.timestamps, button_text);
+				layer.data.addTo(map);
+				slider.sliderControl.addTo(map);
+				time = createTimeLabel("2016");
+				time.temporalLegend.addTo(map);
+				
+            });
+		}
+
+
+		function Refresh() {
+			window.parent.location = window.parent.location.href;
+		}
+
+		function processData(data) {
+        // First, initialize the variables to hold the timestamps and min/max population values
+			var timestamps = [];  // square brackets to define an array of data
+                                    // because there are multiple timestamps
+			var min = Infinity; // for the min, begin with largest possible value - infinity
+			var max = -Infinity;// for the max, smallest possible value - negative infinity
+
+          // Go through each row/feature of the data table
+          // Note data is the variable name in the function definition - processData(data)
+			for (var feature in data.features) {
+				var properties = data.features[feature].properties;
+
+          // At each row, go through the columns/attributes to get the values
+				for (var attribute in properties) {
+					if ( attribute != 'OBJECTID' &&
+						attribute != 'Longitude' &&
+						attribute != 'Latitude')   // != means NOT EQUAL TO
+         // These 3 columns are NOT recorded. Add more if you have non-data fields.
+                                                  
+					{
+					if ( $.inArray(attribute,timestamps) ===  -1) { // JQuery in.Array() method searches for value within an array and return its index (or -1 if not found)
+         // here, the new timestamp is only added when it is not already in the array
+         // triple equals === compares both type and value to see if there’s a match
+
+						timestamps.push(attribute);  
+         // The JS push() method adds new items to the end of an array
+         // and returns the new length of the array
+						}
+					if (properties[attribute] < min) {
+						min = properties[attribute]; // record/update current smaller values as min
+						}
+					if (properties[attribute] > max) {
+						max = properties[attribute]; // update current larger values as the max
+						}
+					}
+                }
+            }
+			
+				return {
+					timestamps : timestamps,
+					min : min,
+					max : max
+				}
+            }
+	
+		function createPropSymbols(timestamps, data, button_text) {
+
+			cities = L.geoJson(data, {
+
+         // By default, Leaflet draws geojson points as simple markers
+         // To alter this, the pointToLayer function needs to be used
+				pointToLayer: function(feature, latlng) {
+					return L.circleMarker(latlng, { // we use circle marker for the points
+                        fillColor: "#2ca25f",  // fill color of the circles
+                        color: '#fee0d2',      // border color of the circles
+                        weight: 2,             // circle line weight in pixels
+                        fillOpacity: 0.5       // fill opacity (0-1)
+                    }).on({
+                        mouseover: function(e) {
+							this.openPopup();
+                            this.setStyle({fillColor: '#de2d26'});  // fill color turns green when mouseover
+                        },
+                        mouseout: function(e) {
+                            this.closePopup();
+                            this.setStyle({fillColor: '#2ca25f'});  // fill turns original color when mouseout
+                        }
+						});
+                }
+            })//.addTo(map);
+
+            updatePropSymbols(timestamps[0], button_text); // this function is defined below
+                                              // When loaded, the map will first show proportional symbols with the first timestamp's data
+											  
+			return {
+			    data: cities
+			}
+        }
+	    
+		
+		function createSliderUI(timestamps, button_text) {
+
+			var sliderControl = L.control({position: 'topright'} ); // position of the slider
+        // Another use of L.control :)
+			sliderControl.onAdd = function(map) {
+		//initialize a range slider with mousedown control
+			var slider = L.DomUtil.create("input", "range-slider");
+			L.DomEvent.addListener(slider, 'mousedown', function(e) {
+				L.DomEvent.stopPropagation(e);
+			});
+    // Define the labels of the time slider as an array of strings
+    // Modify this for your data
+			var labels = ["2016", "2017", "2018", "2019"];
+          <!-- $(slider).mousedown(function () { -->
+            <!-- map.dragging.disable(); -->
+        <!-- }); -->
+        <!-- $(document).mouseup(function () { -->
+            <!-- map.dragging.enable(); -->
+			$(slider)
+				.attr({
+					'type':'range',
+					'max': timestamps[timestamps.length-1],
+					'min':timestamps[0],
+					'step': 1, // Change this to match the interval between adjacent timestamps
+					'value': String(timestamps[0])
+				})
+				.on('input change', function() {
+					updatePropSymbols($(this).val().toString(), button_text); // updates map for timestamp
+					var i = $.inArray(this.value,timestamps);
+					$(".temporal-legend").text(labels[i]); // updates label for the timestamp
+				})
+				.mousedown(function () {
+					map.dragging.disable();
+				})
+		
+				return slider;
+			}
+			
+			return {
+				sliderControl: sliderControl
+			}
+			//sliderControl.addTo(map);
+			//createTimeLabel("2016"); //The starting timestamp label
+		}
+  
+  
+		// Add labels to the time slider when the map first loaded
+		function createTimeLabel(startTimestamp) {
+			var temporalLegend = L.control({position: 'topright' }); // same position as the slider
+                       // One more use of L.control !!
+			temporalLegend.onAdd = function(map) {
+				var output = L.DomUtil.create("output", "temporal-legend");
+				$(output).text(startTimestamp);
+				return output;
+			}
+			return {
+				temporalLegend: temporalLegend
+			}
+		//temporalLegend.addTo(map);
+		}
+  
+  
+  
+		// function to update/resize each circle marker according to value in the time series
+        function updatePropSymbols(timestamp, button_text) {
+								
+			cities.eachLayer(function(layer) {  // eachLayer() is an Leaflet function to iterate over the layers/points of the map
+				var props = layer.feature.properties;   // attributes
+				var radius = calcPropRadius(props[timestamp]); // circle radius, calculation function defined below
+
+		// pop-up information (when mouseover) for each city is also defined here
+				var popupContent = '<strong>' + timestamp + '<br>'+ button_text + '</strong><br>'+ 'Sampling location <strong><#' + props.OBJECTID + '></strong>' +'<br>'+  'Biomass: ' + '<strong>'+ String(props[timestamp]);
+
+				layer.setRadius(radius);  // Leaflet method for setting the radius of a circle
+				layer.bindPopup(popupContent, { offset: new L.Point(0,-radius) }); // bind the popup content, with an offset
+            });
+        }
+
+		// calculate the radius of the proportional symbols based on area
+        function calcPropRadius(attributeValue) {
+
+			var scaleFactor = 1;    // the scale factor is used to scale the values; the units of the radius are in meters
+                                    // you may determine the scale factor accordingly based on the range of the values and the mapping scale
+			var area = attributeValue * scaleFactor;
+
+			return Math.sqrt(area/Math.PI);  // the function return the radius of the circle to be used in the updatePropSymbols()
+        }
+    </script>
+</body>
+</html>

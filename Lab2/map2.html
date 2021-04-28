@@ -191,19 +191,7 @@
         }
       }; // end onEachFeature
 
-	var coviddata = new L.geoJson(covidData, {
-    onEachFeature : onEachFeature,
-    pointToLayer : function(feature, ll){
-        return L.circleMarker(ll, {
-                color: '#000000',
-                opacity: 1,
-                weight: 2,
-                fillColor: '#808080',
-                fillOpacity: .5,
-                //radius: 10
-                radius: calcRadius(feature.properties.covid)   
-            });
-        }})//.addTo(map);     
+    
         </script>
    </body>
 </html>
