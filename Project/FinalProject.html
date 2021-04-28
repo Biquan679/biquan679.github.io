@@ -14,8 +14,8 @@
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
       
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
-		<script src="https://biquan679.github.io/Finalproject/WebGIS_FinalProject/final_data/GSL.json"></script> 
-		<script src="https://biquan679.github.io/Finalproject/WebGIS_FinalProject/final_data/TotalBiomass.json"></script> 
+		<script src="https://biquan679.github.io/Project/Data/GSL.json"></script> 
+		<script src="https://biquan679.github.io/Project/Data/TotalBiomass.json"></script> 
 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	
@@ -96,9 +96,9 @@
 </head>
 <body>
 	<p>Adding data Layer using the buttons bellow.</p>
-		<button class="button button1" value = 'https://biquan679.github.io/Finalproject/WebGIS_FinalProject/final_data/TotalBiomass.json.geojson' onclick="myFunction(this)" id="1">Total Biomass data</button>
-		<button class="button button2" value = 'https://biquan679.github.io/Finalproject/WebGIS_FinalProject/final_data/CoolBiomass.geojson' onclick="myFunction(this)" id="2">Cool-season grass data</button>
-		<button class="button button3" value = 'https://biquan679.github.io/Finalproject/WebGIS_FinalProject/final_data/WarmBiomass.geojson' onclick="myFunction(this)" id="3">warm-season grass data</button><br>
+		<button class="button button1" value = 'https://biquan679.github.io/Project/Data/TotalBiomass.json.geojson' onclick="myFunction(this)" id="1">Total Biomass data</button>
+		<button class="button button2" value = 'https://biquan679.github.io/Project/Data/CoolBiomass.geojson' onclick="myFunction(this)" id="2">Cool-season grass data</button>
+		<button class="button button3" value = 'https://biquan679.github.io/Project/Data/WarmBiomass.geojson' onclick="myFunction(this)" id="3">warm-season grass data</button><br>
 		<button class="button button4" onclick="Refresh()" id="4">Click to Remove data Before adding new data</button> 
 	</div>
 		<div id="map" ></div>
@@ -196,7 +196,7 @@
             
 		legend.addTo(map);
 
-		var NDVI_16 = L.tileLayer('file:///C%3A/Users/Beqaaa/biquan679.github.io/Project/Data/NDVI2016/{z}/{x}/{y}.png', {
+		var NDVI_16 = L.tileLayer('https://biquan679.github.io/Project/Data/NDVI2016/{z}/{x}/{y}.png', {
 			minZoom: 10,
 			maxZoom: 15,
 			tms: false,
@@ -204,7 +204,7 @@
 		});
 	  
 	  
-		var NDVI_17 = L.tileLayer('file:///C%3A/Users/Beqaaa/biquan679.github.io/Project/Data/NDVI2017/{z}/{x}/{y}.png', {
+		var NDVI_17 = L.tileLayer('https://biquan679.github.io/Project/Data/NDVI2017/{z}/{x}/{y}.png', {
 			minZoom: 10,
 			maxZoom: 15,
 			tms: false,
@@ -212,7 +212,7 @@
 		});
 	  
 	  
-		var NDVI_18 = L.tileLayer('file:///C%3A/Users/Beqaaa/biquan679.github.io/Project/Data/NDVI2018/{z}/{x}/{y}.png', {
+		var NDVI_18 = L.tileLayer('https://biquan679.github.io/Project/Data/NDVI2018/{z}/{x}/{y}.png', {
 			minZoom: 10,
 			maxZoom: 15,
 			tms: false,
@@ -220,7 +220,7 @@
 		});
 	  
 	  
-		var NDVI_19 = L.tileLayer('file:///C%3A/Users/Beqaaa/biquan679.github.io/Project/Data/NDVI2019/{z}/{x}/{y}.png', {
+		var NDVI_19 = L.tileLayer('https://biquan679.github.io/Project/Data/NDVI2019/{z}/{x}/{y}.png', {
 			minZoom: 10,
 			maxZoom: 15,
 			tms: false,
